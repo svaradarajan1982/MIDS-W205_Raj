@@ -1,6 +1,6 @@
 # MIDS-W205_Raj Exercise 1
 
-How to run the code:
+## How to run the code:
 
 1. Start an EC2 instance with CentOS UCB AMI
 
