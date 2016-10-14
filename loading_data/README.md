@@ -1,6 +1,6 @@
 ## Entity Relationship diagram
 
-[ER diagram](../blob/hw_dev/W205_hospitals_exercise1.pdf) shows the relationship between the 5 datasets that has been modeled and loaded into hive tables.
+[ER diagram](W205_hospitals_exercise1.pdf) shows the relationship between the 5 datasets that has been modeled and loaded into hive tables.
 
 
 ## Loading the Data
