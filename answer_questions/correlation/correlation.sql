@@ -4,7 +4,7 @@
 SELECT CORR(B.scaled_survey_score, hosp_proc_variance) AS corr_proc_survey_score
 FROM
 (
-SELECT prvdr_id, variance(score) as hosp_proc_variance
+SELECT prvdr_id, STDDEV(score) as hosp_proc_variance
 FROM high_quality_care
 group by prvdr_id) A
 INNER JOIN
