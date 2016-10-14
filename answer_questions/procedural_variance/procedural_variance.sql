@@ -3,7 +3,7 @@
 select A.*
 from
 (
-SELECT measure_id, measure_name, variance(score) as proc_variance
+SELECT measure_id, measure_name, STDDEV(score) as proc_variance
 FROM high_quality_care
 GROUP BY measure_id, measure_name
 ) A
