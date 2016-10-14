@@ -40,6 +40,7 @@ group by A.hospital_name
 where B.weighted_score is not null
 ORDER BY weighted_score ASC
 LIMIT 20;
+```
 
 ```
 # Rankings based on aggregated survey scores
