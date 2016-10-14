@@ -46,6 +46,8 @@ exit;
 ```
 
 ```
+# Rankings based on aggregated survey, base and consistency scores
+
 state Avg_across_hospitals hosp_rank
 WI	0.5766287857304898	1
 SD	0.5746092962290785	2
@@ -68,6 +70,8 @@ KY	0.5059283745762875	18
 CO	0.5057378457900237	19
 OK	0.5056947403491238	20
 -------------------------------------------------------------------------------------
+# Rankings based on readmission and mortality rates
+
 state adj_score denom weighted_score
 ID	741168.7017059326	56087.0	13.214625522954208
 SD	779410.2988739014	58578.0	13.30551228915124
