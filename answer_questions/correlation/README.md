@@ -17,3 +17,5 @@ on A.prvdr_id = B.prvdr_id;
 ```
 
 ```
+Correlation Coefficient r = -0.22906763466525332
+```
