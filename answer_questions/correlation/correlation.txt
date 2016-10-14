@@ -1,0 +1,4 @@
+SET hive.support.sql11.reserved.keywords=false
+SET spark.sql.hive.version=1.2.1
+SET spark.sql.hive.version=1.2.1
+-0.22906763466525332
