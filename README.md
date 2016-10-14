@@ -12,7 +12,7 @@
 
 5. Clone the repo by running git clone //path to the repo
 
-6. The folder should be in /data/MIDS-W205_Raj
+6. Cloned repo should now be in /data/MIDS-W205_Raj
 
 7. CD into this directory and run the following:
 
