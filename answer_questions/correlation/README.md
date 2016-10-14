@@ -1,6 +1,6 @@
 ## Correlation between survey scores and procedural variance
 
-Data Shows negative correlation between survey scores and procedural variance i.e. greater the survey scores lower the procedural variance and vice-versa which sounds intuitive. Correlation Coefficient of -0.22 indicates a medium sized effect.
+Data Shows negative correlation between survey scores and procedural variance i.e. greater the survey scores lower the procedural variance and vice-versa which sounds intuitive because procedures that have less variance is expected to have greater positive feedback and are more likely to matured procedures. Correlation Coefficient of -0.22 indicates a medium sized effect.
 
 ```
 
