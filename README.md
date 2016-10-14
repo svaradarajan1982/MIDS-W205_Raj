@@ -1,5 +1,4 @@
 # MIDS-W205_Raj Exercise 1
-
 To run the code:
 1. Start an EC2 instance with CentOS UCB AMI
 2. Mount the file system /data
