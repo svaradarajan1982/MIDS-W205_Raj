@@ -1,3 +1,5 @@
+-- Transform the hospital data
+
 DROP TABLE IF EXISTS hospital_data;
 
 CREATE TABLE hospital_data as 
@@ -11,6 +13,9 @@ cast(zip as varchar(10)) as zip,
 cast(phn_num as varchar(10)) as phn_num
 
 FROM hospital_info;
+
+
+-- Transform the effective care data. Convert score into a float.
 
 DROP TABLE IF EXISTS high_quality_care;
 
@@ -30,6 +35,7 @@ case when length(score) > 10 then null  else cast(score as float) end as score2
 FROM eff_care;
 
 
+-- Transform readmissions data. Convert denominator and score into a float value.
 
 DROP TABLE IF EXISTS readmission_data;
 
@@ -51,7 +57,8 @@ cast(score as float) as score
 from readmission;
 
 
-
+-- Transform survey data. Survey scores are in text format. convert survey scores into a numeric format using the SQL LIKE 
+-- statement
 
 
 DROP TABLE IF EXISTS survey_transform;
@@ -403,6 +410,9 @@ cast(hcahps_consistency_score as float) as consistency_score
 
 FROM survey;
 
+-- Aggregate the numeric survey scores by calculating an average score per hospital. This is done by dividing the actual score by
+-- by total possible score of 232 (8 of the surveys are only scores out of 9)
+
 DROP TABLE IF EXISTS survey_score_agg;
 
 CREATE TABLE survey_score_agg as
@@ -416,6 +426,8 @@ B.consistency_score
 FROM survey_transform B 
 ;
 
+-- Base Score and Consistency scores have different scale than survey scores. Let's try to normalize these scores. First we 
+-- calculate the min and max score values
 
 DROP TABLE IF EXISTS other_score_mm;
 
@@ -424,7 +436,7 @@ SELECT  MIN(base_score) as min_base_score, MAX(base_score) as max_base_score, MI
 
 FROM survey_score_agg;
 
-
+-- Min and Max score value table is merged with aggregate score table using cross join. Now all rows will have the min and max score values
 DROP TABLE IF EXISTS survey_combined;
 
 CREATE TABLE survey_combined as
@@ -436,7 +448,8 @@ on 1 = 1
 ;
 
 
-
+-- In this table we will leverage feature scaling to normalize for the different range of base and consistency score. Feature
+-- scaling will make all scores to have a value between 0 and 1
 DROP TABLE IF EXISTS survey_scaled;
 
 CREATE TABLE survey_scaled as
@@ -444,7 +457,8 @@ SELECT prvdr_id, hospital_nm,state, scaled_survey_score, ((base_score - min_base
 
 FROM survey_combined;
 
--- TOP 10 HOSPITALS BASED ON CUSTOMER SURVEY SCORES--
+
+-- Now take average of the 3 scores - Survey, Base and Consistsency per hospital
 
 DROP TABLE IF EXISTS aggregate_survey_score;
 
@@ -454,6 +468,7 @@ SELECT prvdr_id, hospital_nm, state, (scaled_survey_score + scaled_base_score + 
 FROM  survey_scaled
 ;
 
+-- Now take mean of the aggregate score by hospital i.e. aggregate across same providers in several states
 
 DROP TABLE IF EXISTS aggregate_survey_score_hosp;
 
@@ -464,7 +479,7 @@ FROM  aggregate_survey_score
 group by prvdr_id, hospital_nm
 ;
 
-
+-- Now take mean of the aggregate score by state i.e. aggregate across all providers within each of the states
 
 DROP TABLE IF EXISTS aggregate_survey_score_st;
 
@@ -474,94 +489,6 @@ SELECT state,  AVG(Avg_hosp_survey_score) as Avg_across_hospitals
 FROM  aggregate_survey_score
 group by state
 ;
-
-
---HOSPITAL LEVEL RANKINGS BASED ON PATIENT SURVEY RESPONSES--
-
-
-SELECT X.*
-FROM 
-(SELECT A.*, rank() over (order by Avg_across_states desc) as hosp_rank 
-FROM aggregate_survey_score_hosp A
-WHERE Avg_across_states is not null) X
-order by hosp_rank ASC
-LIMIT 20;
-
-
--- STATE LEVEL RANKINGS BASED ON PATIENT SURVEY RESPONSES --
-
-
-SELECT X.*
-FROM
-(SELECT A.*, rank() over (order by Avg_across_hospitals desc) as hosp_rank
-FROM aggregate_survey_score_st A
-WHERE Avg_across_hospitals is not null) X
-order by hosp_rank ASC
-LIMIT 20;
-
-
-
---HOSPITAL LEVEL RANKINGS BASED ON READMISSION AND MORTALITY RATE -- 
-
-SELECT B.*
-from
-(
-SELECT X.*, adj_score/denom as weighted_score
-FROM
-(
-SELECT A.hospital_name, sum(score*denominator) as adj_score, sum(denominator) as denom
-FROM readmission_data A
-group by A.hospital_name
-) X
-) B
-where B.weighted_score is not null
-ORDER BY weighted_score ASC
-LIMIT 20;
-
-
-
---STATE LEVEL RANKINGS BASED ON READMISSION AND MORTALITY RATE -- 
-
-SELECT B.*
-from
-(
-SELECT X.*, adj_score/denom as weighted_score
-FROM
-(
-SELECT A.STATE, sum(score*denominator) as adj_score, sum(denominator) as denom
-FROM readmission_data A
-group by A.STATE
-) X
-) B
-where B.weighted_score is not null
-ORDER BY weighted_score ASC
-LIMIT 20;
-
-
--- VARIANCE IN PROCEDURES ACROSS HOSPITALS --
-
-select A.*
-from
-(
-SELECT measure_id, measure_name, variance(score) as proc_variance
-FROM high_quality_care
-GROUP BY measure_id, measure_name
-) A
-ORDER by proc_variance DESC
-LIMIT 20;
- 
--- CORRELATION BETWEEN HOSPITAL LEVEL PROCEDURAL VARIABILITY AND SURVEY SCORES --
-
-
-SELECT CORR(B.scaled_survey_score, hosp_proc_variance) AS corr_proc_survey_score
-FROM
-(
-SELECT prvdr_id, variance(score) as hosp_proc_variance
-FROM high_quality_care
-group by prvdr_id) A
-INNER JOIN
-survey_scaled B
-on A.prvdr_id = B.prvdr_id;
 
 
 exit;
