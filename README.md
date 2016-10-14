@@ -16,7 +16,7 @@
 
 7. CD into this directory and run the following:
 
-    a. bash load_data_lake.sh  # this will download the hospital compare dataset and load that into hdfs
+    a. bash [load_data_lake.sh](load_data_lake.sh)  # this will download the hospital compare dataset and load that into hdfs
     
-    b. bash run_spark_sql.sh # this will ingest the data, transform the key variables and present outputs for problem questions.
+    b. bash [run_spark_sql.sh](run_spark_sql.sh) # this will ingest the data, transform the key variables and present outputs for problem questions.
     
