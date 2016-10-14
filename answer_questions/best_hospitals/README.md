@@ -1,6 +1,8 @@
 ## Best Hospitals
 
-Identifying the best hospitals has been done in two ways: 1. Survey scores from patients which are the best indicators of high quality care is used to determine the best hospitals.In addition the HCAHPS base and consistency scores have been normalized and aggregated and the overall score is used to determine the best hospitals.
+Identifying the best hospitals has been done in two ways: 
+
+1. Survey scores from patients which are the best indicators of high quality care is used to determine the best hospitals.In addition the HCAHPS base and consistency scores have been normalized and aggregated and the overall score is used to determine the best hospitals.
 
 2. Another indicator for best hospitals is 30 day readmission and mortality rates. Second script weight averages the hospital mortality and readmission scores based on denominator value and orders them based on the weighted score with lower weighted score indicating better hospitals.
 
