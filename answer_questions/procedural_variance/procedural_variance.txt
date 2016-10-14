@@ -1,15 +1,23 @@
--- VARIANCE IN PROCEDURES ACROSS HOSPITALS --
-
-select A.*
-from
-(
-SELECT measure_id, measure_name, variance(score) as proc_variance
-FROM high_quality_care
-GROUP BY measure_id, measure_name
-) A
-ORDER by proc_variance DESC
-LIMIT 20;
-
-
-exit;
-
+SET hive.support.sql11.reserved.keywords=false
+SET spark.sql.hive.version=1.2.1
+SET spark.sql.hive.version=1.2.1
+ED_1b	ED1	8617.740839212507
+ED_2b	ED2	3864.6924460743544
+OP_18b	OP 18	1656.5529409803205
+OP_3b	Median Time to Transfer to Another Facility for Acute Coronary Intervention	869.0306968514053
+STK_4	Thrombolytic Therapy	481.98665882944397
+OP_23	Head CT results	477.18888614639235
+AMI_7a	Fibrinolytic Therapy Received Within 30 Minutes Of Hospital Arrival	352.6666666666667
+OP_2	Fibrinolytic Therapy Received Within 30 Minutes of ED Arrival	325.74632352941165
+OP_21	Median time to pain med	314.0819735739413
+OP_20	Door to diagnostic eval	285.00371267017476
+IMM_3_FAC_ADHPCT	Healthcare workers given influenza vaccination	267.25866979161765
+VTE_5	Warfarin therapy discharge instructions	265.78796126891007
+VTE_1	Venous thromboembolism prophylaxis	232.78828961700816
+STK_8	Stroke Education	196.37153240873673
+CAC_3	Home Management Plan of Care Document	161.7760416666667
+IMM_2	Immunization for influenza	142.68029969125467
+HF_1	Discharge instructions	139.9011388469527
+HF_2	Evaluation of LVS Function	108.40606462202838
+STK_6	Discharged on Statin Medication	100.74762297044258
+PN_6	Initial antibiotic selection for CAP in immunocompetent patient	86.04221827311703
